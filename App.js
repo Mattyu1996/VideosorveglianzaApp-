@@ -1,23 +1,18 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, Image, SafeAreaView as SafeAreaView } from 'react-native';
-import Login from './Pages/Login';
-
+import { SafeAreaView, StyleSheet } from "react-native";
+import Home from "./Pages/HomePage";
 
 export default function App() {
   return (
-    <Login/>  
+    <SafeAreaView style={styles.container}>
+      <Home />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'green',
-    padding: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
-  image:{
-    resizeMode: 'cover',
-  }
 });
