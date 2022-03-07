@@ -5,6 +5,7 @@ export default function LiveScreen() {
   return (
     <LinearGradient colors={["#da8f52", "#ef6c00"]} style={styles.gradient}>
         <FlatList style={styles.list}
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={{
             paddingBottom: 40
         }}

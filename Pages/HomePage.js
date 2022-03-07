@@ -8,7 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 const Tab = createMaterialTopTabNavigator();
 
 
-export default function Home() {
+export default function Home({navigation}) {
   const tabBarStyle = {
     tabBarLabelStyle: {
       textTransform: "capitalize",
@@ -34,8 +34,8 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
-      <StatusBar style="dark" />
-      <NavigationContainer>
+      <StatusBar style="light" />
+      <NavigationContainer independent="true">
         <Tab.Navigator screenOptions={tabBarStyle}>
           <Tab.Screen
             name="Live"

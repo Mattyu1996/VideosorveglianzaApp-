@@ -3,7 +3,11 @@ import { LinearGradient } from "expo-linear-gradient";
 import { StyleSheet, Text, TextInput, Image, View } from "react-native";
 import PrimaryButton from "../Components/PrimaryButton";
 
-export default function Login() {
+export default function Login({navigation}) {
+  const login = () => {
+    navigation.navigate('Home');
+  };
+  
   return (
     <LinearGradient colors={["#ef6c00", "#da8f52"]} style={styles.gradient}>
       <StatusBar style="light" />
@@ -25,17 +29,13 @@ export default function Login() {
         />
         <PrimaryButton
           title="Accedi"
-          onPress={onPressHandler}
+          onPress={login}
           accessibilityLabel="Accedi"
         ></PrimaryButton>
       </View>
     </LinearGradient>
   );
 }
-
-const onPressHandler = () => {
-  console.log("fuori");
-};
 
 const styles = StyleSheet.create({
   gradient: {
@@ -94,9 +94,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "bold",
     color: "white",
-    textShadowColor: "rgba(0, 0, 0, 0.25)",
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 10,
     textTransform: "uppercase",
   },
 });

@@ -3,12 +3,16 @@ import IconButton from "./IconButton";
 export default function CameraCard(props) {
     
     const { title } = props;
-  
+    
+    const play = ()=>{
+        console.log('play')
+    }
+
     return (
     <View style={styles.container}>
         <Text style={styles.heading}>{title}</Text>
         <View style={styles.innerContainer}>
-            <IconButton name="play"></IconButton>
+            <IconButton name="play" onPress={play}></IconButton>
         </View>
     </View>
   );
@@ -45,9 +49,8 @@ const styles = StyleSheet.create({
   },
   heading:{
       fontSize: 25,
-      fontWeight: '500',
       color: '#ef6c00',
-      marginLeft: 20,
+      marginLeft: 15,
       marginBottom: 5
   }
 });
