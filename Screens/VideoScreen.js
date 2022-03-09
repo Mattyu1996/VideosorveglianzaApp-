@@ -1,15 +1,9 @@
-import {
-  FlatList,
-  View,
-  StyleSheet,
-  Modal,
-  Text,
-  Pressable,
-  RefreshControl,
-} from "react-native";
+import { FlatList, View, StyleSheet, Modal, Text, Image, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import VideoItem from "../Components/VideoItem";
 import { FAB } from "react-native-elements";
+import CameraItem from "../Components/CameraItem";
+
 export default function VideoScreen() {
   let modalVisible = false;
 
@@ -17,6 +11,11 @@ export default function VideoScreen() {
     console.log("search");
     modalVisible = !modalVisible;
   };
+
+  const selectCamera = () =>{
+    console.log('seleziona camera');
+  };
+
 
   return (
     <LinearGradient colors={["#f5f5f5", "#f5f5f5"]} style={styles.gradient}>
@@ -30,15 +29,11 @@ export default function VideoScreen() {
         }}
       >
         <View style={styles.modalContainer}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable>
-          </View>
+          <Text style={styles.modalHeading}>Seleziona la Camera</Text>
+          <CameraItem title="Camera 1" onPress={selectCamera()} first={true}></CameraItem>
+          <CameraItem title="Camera 2" onPress={selectCamera()}></CameraItem>
+          <CameraItem title="Camera 3" onPress={selectCamera()}></CameraItem>
+          <CameraItem title="Camera 4" onPress={selectCamera()}></CameraItem>
         </View>
       </Modal>
       <FlatList
@@ -107,12 +102,14 @@ const styles = StyleSheet.create({
   modalContainer: {
     backgroundColor: "white",
     width: "80%",
-    height: "80%",
     alignSelf: "center",
-    marginBottom: "20%",
-    marginTop: "30%",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    marginBottom: "50%",
+    marginTop: "50%",
     borderRadius: 20,
-    padding: 10,
+    paddingTop: 20,
+    paddingBottom: 40,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -121,5 +118,29 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+  },
+  modalHeading: {
+    fontSize: 25,
+    fontWeight: "bold",
+    color: "#ef6c00",
+    marginBottom: 20,
+  },
+  modalItem: {
+    width: "100%",
+    height: 70,
+    flexDirection: "row",
+    alignItems: "center",
+    borderColor: "#f5f5f5",
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
+  },
+  modalItemIcon: {
+    width: 50,
+    height: 50,
+    marginRight: 20,
+  },
+  modalItemTitle: {
+    fontSize: 20,
+    color: "#777777",
   },
 });
