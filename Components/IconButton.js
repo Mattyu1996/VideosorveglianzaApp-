@@ -3,7 +3,27 @@ import React from "react";
 import { Pressable, StyleSheet } from "react-native";
 
 export default function IconButton(props) {
-  const { onPress, name } = props;
+  const { onPress, name, size } = props;
+
+
+  const styles = StyleSheet.create({
+    button: {
+      width: size,
+      height: size,
+      alignItems: "center",
+      justifyContent: "center",
+      borderRadius: size,
+      elevation: 5,
+    },
+    icon: {
+      fontSize: 22,
+      color: "#ef6c00",
+    },
+    iconPressed: {
+      fontSize: 22,
+      color: "white",
+    },
+  });
 
   return (
     <Pressable
@@ -17,30 +37,14 @@ export default function IconButton(props) {
     >
       {({ pressed }) =>
         pressed ? (
-            <Ionicons name={name} color="red" size="20" style={styles.iconPressed} />
+            <Ionicons name={name} color="red" size={size/2.5} style={styles.iconPressed} />
         ) : (
-            <Ionicons name={name} color="red" size="20" style={styles.icon} />
+            <Ionicons name={name} color="red" size={size/2.5} style={styles.icon} />
         )
       }
     </Pressable>
   );
+
 }
 
-const styles = StyleSheet.create({
-  button: {
-    width: 50,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 50,
-    elevation: 5,
-  },
-  icon: {
-    fontSize: 22,
-    color: "#ef6c00",
-  },
-  iconPressed: {
-    fontSize: 22,
-    color: "white",
-  },
-});
+

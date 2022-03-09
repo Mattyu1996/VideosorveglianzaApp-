@@ -1,5 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { StyleSheet, Text, TextInput, Image, View, FlatList } from "react-native";
+import { StyleSheet, Text, TextInput, Image, FlatList } from "react-native";
+import { FAB } from 'react-native-elements';
 import CameraCard from "../Components/CameraCard";
 export default function LiveScreen() {
   return (
@@ -17,6 +18,14 @@ export default function LiveScreen() {
         ]}
         renderItem={({item}) => <CameraCard title={item.key}></CameraCard>}
       />
+      <FAB
+        style={{marginBottom: 50}}
+          visible={true}
+          icon={{ name: 'fullscreen', color: 'white' }}
+          color="#ef6c00"
+          placement="right"
+          onPress={() =>console.log('fullscreen')}
+        />
     </LinearGradient>
   );
 }

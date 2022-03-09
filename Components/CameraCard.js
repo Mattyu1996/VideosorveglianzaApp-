@@ -12,7 +12,7 @@ export default function CameraCard(props) {
     <View style={styles.container}>
         <Text style={styles.heading}>{title}</Text>
         <View style={styles.innerContainer}>
-            <IconButton name="play" onPress={play}></IconButton>
+            <IconButton size={50} name="play" onPress={play}></IconButton>
         </View>
     </View>
   );
