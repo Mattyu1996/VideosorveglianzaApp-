@@ -3,89 +3,109 @@ import { LinearGradient } from "expo-linear-gradient";
 import VideoItem from "../Components/VideoItem";
 import { FAB } from "react-native-elements";
 import CameraItem from "../Components/CameraItem";
+import PrimaryButton from "../Components/PrimaryButton";
+import { Component } from "react";
 
-export default function VideoScreen() {
-  let modalVisible = false;
+export default class VideoScreen extends Component {
+  state = {
+    modalVisible: false
+  }
 
-  const showModal = () => {
-    console.log("search");
-    modalVisible = !modalVisible;
+  openModal = () => {
+    console.log("openModal");
+    this.setState({modalVisible: true});
   };
 
-  const selectCamera = () =>{
+  closeModal = () =>{
+    console.log('closeModal')
+    this.setState({modalVisible: false});
+  }
+
+  selectCamera = () =>{
     console.log('seleziona camera');
   };
 
+  search = () =>{
+    console.log('search');
+  }
 
-  return (
-    <LinearGradient colors={["#f5f5f5", "#f5f5f5"]} style={styles.gradient}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.modalContainer}>
-          <Text style={styles.modalHeading}>Seleziona la Camera</Text>
-          <CameraItem title="Camera 1" onPress={selectCamera()} first={true}></CameraItem>
-          <CameraItem title="Camera 2" onPress={selectCamera()}></CameraItem>
-          <CameraItem title="Camera 3" onPress={selectCamera()}></CameraItem>
-          <CameraItem title="Camera 4" onPress={selectCamera()}></CameraItem>
-        </View>
-      </Modal>
-      <FlatList
-        style={styles.list}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingBottom: 30,
-        }}
-        data={[
-          {
-            data: "08/03/2023",
-            orario: "18:00 - 19:00",
-            dimensione: "1,1 Gb",
-          },
-          {
-            data: "08/03/2023",
-            orario: "18:00 - 19:00",
-            dimensione: "1,1 Gb",
-          },
-          {
-            data: "08/03/2023",
-            orario: "18:00 - 19:00",
-            dimensione: "1,1 Gb",
-          },
-          {
-            data: "08/03/2023",
-            orario: "18:00 - 19:00",
-            dimensione: "1,1 Gb",
-          },
-          {
-            data: "08/03/2023",
-            orario: "18:00 - 19:00",
-            dimensione: "1,1 Gb",
-          },
-          {
-            data: "08/03/2023",
-            orario: "18:00 - 19:00",
-            dimensione: "1,1 Gb",
-          },
-        ]}
-        renderItem={({ item }) => <VideoItem videoInfo={item} />}
-      />
-      <FAB
-        style={{ marginBottom: 50 }}
-        visible={true}
-        icon={{ name: "search", color: "white" }}
-        color="#ef6c00"
-        placement="right"
-        onPress={showModal}
-      />
-    </LinearGradient>
-  );
+  render(){
+    return (
+      <LinearGradient colors={["#f5f5f5", "#f5f5f5"]} style={styles.gradient}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            this.closeModal();
+          }}
+        >
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalHeading}>Seleziona la Camera</Text>
+            <CameraItem title="Camera 1" onPress={()=>this.selectCamera()} first={true}></CameraItem>
+            <CameraItem title="Camera 2" onPress={()=>this.selectCamera()}></CameraItem>
+            <CameraItem title="Camera 3" onPress={()=>this.selectCamera()}></CameraItem>
+            <CameraItem title="Camera 4" onPress={()=>this.selectCamera()}></CameraItem>
+            <PrimaryButton style={{marginTop: 20}}
+            title="Indietro"
+            onPress={()=>this.closeModal()}
+            accessibilityLabel="Indietro"
+          ></PrimaryButton>
+          </View>
+        </Modal>
+        <FlatList
+          style={styles.list}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingBottom: 30,
+          }}
+          data={[
+            {
+              data: "08/03/2023",
+              orario: "18:00 - 19:00",
+              dimensione: "1,1 Gb",
+            },
+            {
+              data: "08/03/2023",
+              orario: "18:00 - 19:00",
+              dimensione: "1,1 Gb",
+            },
+            {
+              data: "08/03/2023",
+              orario: "18:00 - 19:00",
+              dimensione: "1,1 Gb",
+            },
+            {
+              data: "08/03/2023",
+              orario: "18:00 - 19:00",
+              dimensione: "1,1 Gb",
+            },
+            {
+              data: "08/03/2023",
+              orario: "18:00 - 19:00",
+              dimensione: "1,1 Gb",
+            },
+            {
+              data: "08/03/2023",
+              orario: "18:00 - 19:00",
+              dimensione: "1,1 Gb",
+            },
+          ]}
+          renderItem={({ item }) => <VideoItem videoInfo={item} onPlay={this.openModal} onDownload={this.openModal}  />}
+        />
+        <FAB
+          style={{ marginBottom: 50 }}
+          visible={true}
+          icon={{ name: "search", color: "white" }}
+          color="#ef6c00"
+          placement="right"
+          onPress={this.search}
+        />
+      </LinearGradient>
+    );
+  }
+  
 }
 
 const styles = StyleSheet.create({
@@ -109,7 +129,7 @@ const styles = StyleSheet.create({
     marginTop: "50%",
     borderRadius: 20,
     paddingTop: 20,
-    paddingBottom: 40,
+    paddingBottom: 20,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

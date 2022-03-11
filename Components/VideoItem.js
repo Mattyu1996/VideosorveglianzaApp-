@@ -2,16 +2,8 @@ import { Image, View, StyleSheet, Text } from "react-native";
 import IconButton from "./IconButton";
 export default function VideoItem(props) {
     
-    const { videoInfo } = props;
+    const { videoInfo, onPlay, onDownload } = props;
     
-    const play = ()=>{
-        console.log('play')
-    }
-
-    const download = () =>{
-      console.log('download')
-    }
-
     return (
     <View style={styles.container}>
         <Image style={styles.thumbnail}></Image>
@@ -20,8 +12,8 @@ export default function VideoItem(props) {
             <Text style={styles.paragraph}>{videoInfo.orario}</Text>
             <Text style={styles.paragraph}>{videoInfo.dimensione}</Text>
             <View style={styles.buttonContainer}>
-              <IconButton size={40} name="download" onPress={download}></IconButton>
-              <IconButton size={40} name="play" onPress={play}></IconButton>
+              <IconButton size={40} name="download" onPress={onDownload}></IconButton>
+              <IconButton size={40} name="play" onPress={onPlay}></IconButton>
             </View>
         </View>
     </View>

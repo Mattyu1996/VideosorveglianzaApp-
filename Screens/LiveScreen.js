@@ -2,7 +2,11 @@ import { LinearGradient } from "expo-linear-gradient";
 import { StyleSheet, Text, TextInput, Image, FlatList } from "react-native";
 import { FAB } from 'react-native-elements';
 import CameraCard from "../Components/CameraCard";
-export default function LiveScreen() {
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+export default function LiveScreen(props) {
+
+  const { showAllCameras, showOneCamera } = props;
+
   return (
     <LinearGradient colors={["#da8f52", "#ef6c00"]} style={styles.gradient}>
         <FlatList style={styles.list}
@@ -11,12 +15,12 @@ export default function LiveScreen() {
             paddingBottom: 40
         }}
         data={[
-          {key: 'Camera 1'},
-          {key: 'Camera 2'},
-          {key: 'Camera 3'},
-          {key: 'Camera 4'}
+          {key: 'Camera 1', cameraId: 1},
+          {key: 'Camera 2', cameraId: 2},
+          {key: 'Camera 3', cameraId: 3},
+          {key: 'Camera 4', cameraId: 4}
         ]}
-        renderItem={({item}) => <CameraCard title={item.key}></CameraCard>}
+        renderItem={({item}) => <CameraCard title={item.key} onPlay={()=>{showOneCamera(item.cameraId)}}></CameraCard>}
       />
       <FAB
         style={{marginBottom: 50}}
@@ -24,7 +28,7 @@ export default function LiveScreen() {
           icon={{ name: 'fullscreen', color: 'white' }}
           color="#ef6c00"
           placement="right"
-          onPress={() =>console.log('fullscreen')}
+          onPress={showAllCameras}
         />
     </LinearGradient>
   );

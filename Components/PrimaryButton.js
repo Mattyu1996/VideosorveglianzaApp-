@@ -2,7 +2,7 @@ import React from "react";
 import { Text, StyleSheet, Pressable } from "react-native";
 
 export default function PrimaryButton(props) {
-  const { onPress, title = "Press" } = props;
+  const { style, onPress, title = "Press" } = props;
 
   return (
     <Pressable
@@ -10,6 +10,7 @@ export default function PrimaryButton(props) {
         {
           backgroundColor: pressed ? "#ef6c00" : "white",
         },
+        style,
         styles.button,
       ]}
       onPress={onPress}

@@ -32,6 +32,15 @@ export default function Home({navigation}) {
     tabBarShowIcon: true,
   };
 
+
+  const showAllCameras = () => {
+    navigation.navigate('FourPlayer');
+  };
+
+  const showOneCamera = (id) => {
+    navigation.navigate('MaximizedPlayer',{videoUrl: `https://nms.ccml.it/live/cam${id}/index.m3u8`});
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
@@ -39,7 +48,7 @@ export default function Home({navigation}) {
         <Tab.Navigator screenOptions={tabBarStyle}>
           <Tab.Screen
             name="Live"
-            component={LiveScreen}
+            children={()=><LiveScreen showAllCameras={showAllCameras} showOneCamera={showOneCamera}/>}
             tabBarAccessibilityLabel="Live"
             options={{
               tabBarIcon: ({ color, size }) => (
