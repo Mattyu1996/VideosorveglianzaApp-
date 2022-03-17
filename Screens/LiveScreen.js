@@ -1,37 +1,52 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { StyleSheet, Text, TextInput, Image, FlatList } from "react-native";
-import { FAB } from 'react-native-elements';
+import { FlatList, StyleSheet } from "react-native";
+import { FAB } from "react-native-elements";
 import CameraCard from "../Components/CameraCard";
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-export default function LiveScreen(props) {
+import * as React from "react";
+import { Component } from "react";
+import { connect } from "react-redux";
 
-  const { showAllCameras, showOneCamera } = props;
+class LiveScreen extends Component{
+  
+  constructor(props){
+    super(props)
+  }
 
-  return (
-    <LinearGradient colors={["#da8f52", "#ef6c00"]} style={styles.gradient}>
-        <FlatList style={styles.list}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-            paddingBottom: 40
-        }}
-        data={[
-          {key: 'Camera 1', cameraId: 1},
-          {key: 'Camera 2', cameraId: 2},
-          {key: 'Camera 3', cameraId: 3},
-          {key: 'Camera 4', cameraId: 4}
-        ]}
-        renderItem={({item}) => <CameraCard title={item.key} onPlay={()=>{showOneCamera(item.cameraId)}}></CameraCard>}
-      />
-      <FAB
-        style={{marginBottom: 50}}
+  state={
+    cameras: []
+  }
+
+  render(){
+    return (
+      <LinearGradient colors={["#da8f52", "#ef6c00"]} style={styles.gradient}>
+        <FlatList
+          style={styles.list}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingBottom: 40,
+          }}
+          data={this.props.cameras}
+          renderItem={({ item }) => (
+            <CameraCard
+              title={"Camera "+item.id}
+              thumbnail={item.thumb}
+              onPlay={() => {
+                this.props.showOneCamera(item.url);
+              }}
+            ></CameraCard>
+          )}
+        />
+        <FAB
+          style={{ marginBottom: 50 }}
           visible={true}
-          icon={{ name: 'fullscreen', color: 'white' }}
+          icon={{ name: "fullscreen", color: "white" }}
           color="#ef6c00"
           placement="right"
-          onPress={showAllCameras}
+          onPress={this.props.showAllCameras}
         />
-    </LinearGradient>
-  );
+      </LinearGradient>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -41,8 +56,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  list:{
-      width: '100%',
-      paddingVertical: 30
-  }
+  list: {
+    width: "100%",
+    paddingVertical: 30,
+  },
 });
+
+
+const mapStateToProps = (state) => {
+  return {
+    cameras: state.cameraReducer.cameras
+  }
+};
+
+export default connect(mapStateToProps)(LiveScreen);

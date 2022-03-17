@@ -1,23 +1,37 @@
 import { Image, View, StyleSheet, Text } from "react-native";
 import IconButton from "./IconButton";
-export default function VideoItem(props) {
-    
-    const { videoInfo, onPlay, onDownload } = props;
-    
-    return (
-    <View style={styles.container}>
-        <Image style={styles.thumbnail}></Image>
-        <View style={styles.rightContainer}> 
-            <Text style={styles.heading}>{videoInfo.data}</Text>
-            <Text style={styles.paragraph}>{videoInfo.orario}</Text>
-            <Text style={styles.paragraph}>{videoInfo.dimensione}</Text>
-            <View style={styles.buttonContainer}>
-              <IconButton size={40} name="download" onPress={onDownload}></IconButton>
-              <IconButton size={40} name="play" onPress={onPlay}></IconButton>
+import { Component } from "react";
+export default class VideoItem extends Component {
+    constructor(props){
+      super(props);
+      this.props = props;
+      this.state={
+        thumb:{
+          uri: this.props.videoInfo.thumb
+        }
+      }
+    }
+
+    shouldComponentUpdate(nextProps){
+      return nextProps.videoInfo !== this.props.videoInfo;
+    }
+
+    render(){
+      return (
+        <View style={styles.container}>
+            <Image style={styles.thumbnail} source={this.state.thumb}/>
+            <View style={styles.rightContainer}> 
+                <Text style={styles.heading}>{this.props.videoInfo.time}</Text>
+                <Text style={styles.paragraph}>{this.props.videoInfo.date}</Text>
+                <Text style={styles.paragraph}>{this.props.videoInfo.size}</Text>
+                <View style={styles.buttonContainer}>
+                  <IconButton size={40} name="download" onPress={()=>this.props.onDownload(this.props.videoInfo)}></IconButton>
+                  <IconButton size={40} name="play" onPress={()=>{this.props.onPlay(this.props.videoInfo)}}></IconButton>
+                </View>
             </View>
         </View>
-    </View>
-  );
+      );
+    }
 }
 
 const styles = StyleSheet.create({

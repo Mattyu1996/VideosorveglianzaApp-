@@ -1,8 +1,8 @@
-import { Video } from "expo-av";
-import * as React from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
-import * as ScreenOrientation from "expo-screen-orientation";
 import { useFocusEffect } from "@react-navigation/native";
+import { Video } from "expo-av";
+import * as ScreenOrientation from "expo-screen-orientation";
+import * as React from "react";
+import { StyleSheet, View } from "react-native";
 
 export default function FourLivePlayer({ navigation }) {
   const video = React.useRef(null);

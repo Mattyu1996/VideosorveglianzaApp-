@@ -1,35 +1,79 @@
-import { FlatList, View, StyleSheet, Modal, Text, Image, Pressable } from "react-native";
+import * as FileSystem from "expo-file-system";
 import { LinearGradient } from "expo-linear-gradient";
-import VideoItem from "../Components/VideoItem";
+import { Component } from "react";
+import { FlatList, Modal, StyleSheet, Text, View } from "react-native";
 import { FAB } from "react-native-elements";
+import { connect } from "react-redux";
 import CameraItem from "../Components/CameraItem";
 import PrimaryButton from "../Components/PrimaryButton";
-import { Component } from "react";
+import VideoItem from "../Components/VideoItem";
 
-export default class VideoScreen extends Component {
+
+class VideoScreen extends Component {
+  constructor(props, { navigation }) {
+    super(props);
+    this.navigation = navigation;
+    this.props = props;
+  }
+
   state = {
-    modalVisible: false
+    modalVisible: false,
+      action: null,
+      selectedVideo: null,
+  }
+
+  selectCamera = (cameraId) => {
+    if (this.state.action != null && this.state.selectedVideo != null) {
+      if (this.state.action == "play") {
+        this.props.playVideo(
+          `https://vsserver.ccml.it/video/${cameraId}/${this.state.selectedVideo.date}/${this.state.selectedVideo.file}`
+        );
+      } else if (this.state.action == "download") {
+        this.downloadVideo(
+          this.state.selectedVideo.file,
+          `https://vsserver.ccml.it/video/${cameraId}/${this.state.selectedVideo.date}/${this.state.selectedVideo.file}?download=true`
+        );
+      }
+    }
+    this.closeModal();
+  };
+
+  async downloadVideo(filename, fileUrl) {
+    let fileUri = `${FileSystem.documentDirectory}${filename}`;
+    FileSystem.FileSystemDownloadResult = await FileSystem.downloadAsync(
+      fileUrl,
+      fileUri
+    );
+  }
+
+  search = () => {
+    console.log("search");
+  };
+
+  onPlay(selectedVideo) {
+    //console.log(selectedVideo);
+    this.setState({ selectedVideo: selectedVideo });
+    this.setState({ action: "play" });
+    this.openModal();
+  }
+
+  onDownload(selectedVideo) {
+    console.log(selectedVideo);
+    this.setState({ selectedVideo: selectedVideo, action: "download" });
+    this.openModal();
   }
 
   openModal = () => {
     console.log("openModal");
-    this.setState({modalVisible: true});
+    this.setState({ modalVisible: true })
   };
 
-  closeModal = () =>{
-    console.log('closeModal')
-    this.setState({modalVisible: false});
-  }
-
-  selectCamera = () =>{
-    console.log('seleziona camera');
+  closeModal = () => {
+    console.log("closeModal");
+    this.setState({ modalVisible: false });
   };
 
-  search = () =>{
-    console.log('search');
-  }
-
-  render(){
+  render() {
     return (
       <LinearGradient colors={["#f5f5f5", "#f5f5f5"]} style={styles.gradient}>
         <Modal
@@ -37,63 +81,56 @@ export default class VideoScreen extends Component {
           transparent={true}
           visible={this.state.modalVisible}
           onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            this.closeModal();
+            console.log("Modal has been closed.");
           }}
         >
           <View style={styles.modalContainer}>
             <Text style={styles.modalHeading}>Seleziona la Camera</Text>
-            <CameraItem title="Camera 1" onPress={()=>this.selectCamera()} first={true}></CameraItem>
-            <CameraItem title="Camera 2" onPress={()=>this.selectCamera()}></CameraItem>
-            <CameraItem title="Camera 3" onPress={()=>this.selectCamera()}></CameraItem>
-            <CameraItem title="Camera 4" onPress={()=>this.selectCamera()}></CameraItem>
-            <PrimaryButton style={{marginTop: 20}}
-            title="Indietro"
-            onPress={()=>this.closeModal()}
-            accessibilityLabel="Indietro"
-          ></PrimaryButton>
+            <CameraItem
+              title="Camera 1"
+              onPress={() => this.selectCamera(1)}
+              first={true}
+            ></CameraItem>
+            <CameraItem
+              title="Camera 2"
+              onPress={() => this.selectCamera(2)}
+            ></CameraItem>
+            <CameraItem
+              title="Camera 3"
+              onPress={() => this.selectCamera(3)}
+            ></CameraItem>
+            <CameraItem
+              title="Camera 4"
+              onPress={() => this.selectCamera(4)}
+            ></CameraItem>
+            <PrimaryButton
+              style={{ marginTop: 20 }}
+              title="Indietro"
+              onPress={() => this.closeModal()}
+              accessibilityLabel="Indietro"
+            ></PrimaryButton>
           </View>
         </Modal>
-        <FlatList
-          style={styles.list}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingBottom: 30,
-          }}
-          data={[
-            {
-              data: "08/03/2023",
-              orario: "18:00 - 19:00",
-              dimensione: "1,1 Gb",
-            },
-            {
-              data: "08/03/2023",
-              orario: "18:00 - 19:00",
-              dimensione: "1,1 Gb",
-            },
-            {
-              data: "08/03/2023",
-              orario: "18:00 - 19:00",
-              dimensione: "1,1 Gb",
-            },
-            {
-              data: "08/03/2023",
-              orario: "18:00 - 19:00",
-              dimensione: "1,1 Gb",
-            },
-            {
-              data: "08/03/2023",
-              orario: "18:00 - 19:00",
-              dimensione: "1,1 Gb",
-            },
-            {
-              data: "08/03/2023",
-              orario: "18:00 - 19:00",
-              dimensione: "1,1 Gb",
-            },
-          ]}
-          renderItem={({ item }) => <VideoItem videoInfo={item} onPlay={this.openModal} onDownload={this.openModal}  />}
-        />
+
+        {this.props.videos != null && this.props.videos.length > 0 ? (
+          <FlatList
+            style={styles.list}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              paddingBottom: 30,
+            }}
+            data={this.props.videos}
+            renderItem={({ item }) => (
+              <VideoItem
+                videoInfo={item}
+                onPlay={this.onPlay.bind(this)}
+                onDownload={this.onDownload.bind(this)}
+              />
+            )}
+          />
+        ) : (
+          <Text style={{ fontSize: 20 }}>Nessun video disponibile</Text>
+        )}
         <FAB
           style={{ marginBottom: 50 }}
           visible={true}
@@ -105,7 +142,6 @@ export default class VideoScreen extends Component {
       </LinearGradient>
     );
   }
-  
 }
 
 const styles = StyleSheet.create({
@@ -164,3 +200,12 @@ const styles = StyleSheet.create({
     color: "#777777",
   },
 });
+
+const mapStateToProps = (state) => {
+  return {
+    videos: state.videosReducer.videos
+  }
+};
+
+export default connect(mapStateToProps)(VideoScreen);
+

@@ -4,7 +4,7 @@ import * as ScreenOrientation from "expo-screen-orientation";
 import * as React from "react";
 import { StyleSheet, View } from "react-native";
 
-export default function MaximizedLivePlayer({ route, navigation }) {
+export default function MaximizedLivePlayer({ route }) {
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({
     isPlaying: true,
@@ -13,13 +13,12 @@ export default function MaximizedLivePlayer({ route, navigation }) {
 
   useFocusEffect(
     React.useCallback(() => {
-      // Do something when the screen is focused
+      // ON ENTER
       ScreenOrientation.lockAsync(
         ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT
       );
       return () => {
-        // Do something when the screen is unfocused
-        // Useful for cleanup functions
+        // ON EXIT
         ScreenOrientation.lockAsync(
           ScreenOrientation.OrientationLock.PORTRAIT_UP
         );
@@ -35,9 +34,11 @@ export default function MaximizedLivePlayer({ route, navigation }) {
         source={{
           uri: videoUrl,
         }}
+        useNativeControls
         shouldPlay={true}
         resizeMode="stretch"
         onPlaybackStatusUpdate={(status) => {
+          console.log(status);
           setStatus(status);
         }}
       />

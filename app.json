@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "VideosorveglianzaApp-",
-    "slug": "VideosorveglianzaApp-",
+    "name": "VideosorveglianzaApp",
+    "slug": "VideosorveglianzaApp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -24,7 +24,9 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "it.ccml.videosorveglianza.app",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"

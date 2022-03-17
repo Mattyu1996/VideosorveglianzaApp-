@@ -5,10 +5,23 @@ import { NavigationContainer } from "@react-navigation/native";
 import LiveScreen from "../Screens/LiveScreen";
 import VideoScreen from "../Screens/VideoScreen";
 import { Ionicons } from '@expo/vector-icons';
+import React, {useEffect} from 'react';
+import videosApiCall from '../Redux/Actions/videoActionCreator';
+import camerasApiCall from '../Redux/Actions/cameraActionCreator';
+import {useDispatch, useSelector} from 'react-redux';
+
 const Tab = createMaterialTopTabNavigator();
 
 
-export default function Home({navigation}) {
+function Home({navigation}) {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(videosApiCall());
+    dispatch(camerasApiCall());
+  }, []);
+
   const tabBarStyle = {
     tabBarLabelStyle: {
       textTransform: "capitalize",
@@ -37,9 +50,14 @@ export default function Home({navigation}) {
     navigation.navigate('FourPlayer');
   };
 
-  const showOneCamera = (id) => {
-    navigation.navigate('MaximizedPlayer',{videoUrl: `https://nms.ccml.it/live/cam${id}/index.m3u8`});
+  const showOneCamera = (videoUrl) => {
+    navigation.navigate('MaximizedLivePlayer',{videoUrl: videoUrl});
   };
+
+  const playVideo = (videoUrl) => {
+    console.log(videoUrl);
+    navigation.navigate('MaximizedPlayer',{videoUrl: videoUrl});
+  }
 
   return (
     <View style={styles.container}>
@@ -58,7 +76,7 @@ export default function Home({navigation}) {
           />
           <Tab.Screen
             name="Video"
-            component={VideoScreen}
+            children={()=><VideoScreen playVideo={playVideo}/>}
             tabBarAccessibilityLabel="Video"
             options={{
               tabBarIcon: ({ color, size }) => (
@@ -72,9 +90,6 @@ export default function Home({navigation}) {
   );
 }
 
-
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -86,3 +101,5 @@ const styles = StyleSheet.create({
     fontSize: 25  
   }
 });
+
+export default Home;

@@ -1,7 +1,7 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function CameraItem(props) {
-  const { title, onPress, first} = props;
+  const { title, onPress, cameraId, first} = props;
 
   return (
     <Pressable
