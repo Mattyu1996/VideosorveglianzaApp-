@@ -1,5 +1,6 @@
 import { Text, View, StyleSheet, ImageBackground } from "react-native";
 import IconButton from "./IconButton";
+
 export default function CameraCard(props) {
   const { title, onPlay, thumbnail } = props;
 

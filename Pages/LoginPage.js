@@ -1,30 +1,20 @@
+import * as React from "react";
 import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
 import { StyleSheet, Text, TextInput, Image, View } from "react-native";
 import PrimaryButton from "../Components/PrimaryButton";
 import authCall from "../Redux/Actions/authActionCreator";
-import {useDispatch, useSelector} from 'react-redux';
-import LocalStorage from "../Services/LocalStorage";
+import {useDispatch} from 'react-redux';
 
-export default function Login({navigation}) {
-
+export default function Login(props) {
   const dispatch = useDispatch();
-
-  const localStorage = new LocalStorage();
-
+  const [username, setUsername] = React.useState();
+  const [password, setPassword] = React.useState();
   const login = () => {
-    localStorage.getToken().then(token => {
-      if(token!= ""){
-        console.log('GIA AUTENTICATO', token)
-        navigation.navigate('Home');
-      }
-      else {
-        console.log('MI DEVO AUTENTICARE');
-        dispatch(authCall("ADMIN", "1248"));
-      }
-    });
-    
-    //navigation.navigate('Home');
+    if(username!=""&&username!=null&&password!=""&&password!=null){
+      dispatch(authCall(username, password));
+    }
+    else console.log("Inserire username e password");
   };
   
   return (
@@ -39,12 +29,16 @@ export default function Login({navigation}) {
           style={styles.input}
           placeholder={"Username"}
           accessibilityLabel="Username"
+          defaultValue={username}
+          onChangeText={input => setUsername(input)}
         />
         <TextInput
           style={styles.input}
           placeholder={"Password"}
           accessibilityLabel="Password"
           secureTextEntry={true}
+          defaultValue={password}
+          onChangeText={input => setPassword(input)}
         />
         <PrimaryButton
           title="Accedi"
