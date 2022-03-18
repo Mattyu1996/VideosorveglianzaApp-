@@ -1,7 +1,5 @@
 import {fetchVideos, fetchVideoSuccess, fetchVideoError} from './videoActions';
-import ApiClient from '../../Services/ApiClient';
-
-const apiClient = new ApiClient();
+import apiClient from '../../Services/ApiClient';
 
 const videoActionCreator = () => (dispatch)=>{
     dispatch(fetchVideos());

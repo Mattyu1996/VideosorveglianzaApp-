@@ -13,7 +13,7 @@ const Stack = createNativeStackNavigator();
 
 export default function AuthWrapper(){
 
-    const authToken = useSelector(state => state.authReducer.token);
+    useSelector(state => state.authReducer.token);
     const [isAuthenticated, setIsAuthenticated] = React.useState();
     const localStorage = new LocalStorage();
     // localStorage.saveToken("");

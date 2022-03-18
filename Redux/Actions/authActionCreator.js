@@ -1,7 +1,5 @@
 import {login, loginSuccess, loginError} from './authActions';
-import ApiClient from '../../Services/ApiClient';
-
-const apiClient = new ApiClient();
+import apiClient from '../../Services/ApiClient';
 
 const authActionCreator = (username, password) => (dispatch)=>{
     dispatch(login());

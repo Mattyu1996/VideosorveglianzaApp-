@@ -1,17 +1,22 @@
 import axios from 'axios';
+import LocalStorage from './LocalStorage';
 
-
-export default class ApiClient{
+class ApiClient{
     constructor(){
         this.api = axios.create({
             baseURL: 'https://vsserver.ccml.it',
             responseType: 'json'
         });
+        this.storage = new LocalStorage();
+        this.storage.getToken().then(token =>{
+            axios.defaults.headers.get['Authorization']=`Bearer ${token}`;
+        })
     }
 
     async getCameras(){
-        let result = (await this.api.get('/cameras')).data;
-        return result;
+        let res = (await this.api.get('/cameras')).data;
+        console.log(res);
+        return res;
     }
     
     async getRecordedVideos(){
@@ -35,4 +40,7 @@ export default class ApiClient{
         return 0;
     }
 }
+
+const apiClient = new ApiClient();
+export default apiClient;
 

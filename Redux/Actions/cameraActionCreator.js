@@ -1,7 +1,5 @@
 import {fetchCamera, fetchCameraSuccess, fetchCameraError} from './cameraActions';
-import ApiClient from '../../Services/ApiClient';
-
-const apiClient = new ApiClient();
+import apiClient from '../../Services/ApiClient';
 
 const cameraActionCreator = () => (dispatch)=>{
     dispatch(fetchCamera());
