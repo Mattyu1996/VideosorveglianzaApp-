@@ -8,7 +8,6 @@ import FourPlayer from "../Pages/FourLivePlayer";
 import MaximizedLivePlayer from "../Pages/MaximizedLivePlayer";
 import MaximizedPlayer from "../Pages/MaximizedPlayer";
 import LocalStorage from "../Services/LocalStorage";
-
 const Stack = createNativeStackNavigator();
 
 export default function AuthWrapper(){
@@ -19,7 +18,7 @@ export default function AuthWrapper(){
     // localStorage.saveToken("");
     localStorage.getToken().then(token => {
       if(token!="" && token !=null){
-        console.log('GIA AUTENTICATO');
+        console.log('GIA AUTENTICATO', token);
         setIsAuthenticated(true);
       }
       else {

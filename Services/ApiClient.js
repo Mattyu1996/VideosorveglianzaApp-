@@ -7,20 +7,21 @@ class ApiClient{
             baseURL: 'https://vsserver.ccml.it',
             responseType: 'json'
         });
-        this.storage = new LocalStorage();
-        this.storage.getToken().then(token =>{
-            axios.defaults.headers.get['Authorization']=`Bearer ${token}`;
-        })
+        this.test = 1;
+        this.storege = new LocalStorage();
     }
 
     async getCameras(){
-        return (await this.api.get('/cameras')).data;
+        let token = await this.storege.getToken();
+        let headers = {Authorization: `Bearer ${token}`};
+        return (await this.api.get('/cameras', {headers:headers})).data;
     }
     
     async getRecordedVideos(){
-        let result =(await this.api.get('/video')).data;
-        result = result.sort(this.sortVideo);
-        return result;
+        let token = await this.storege.getToken();
+        let headers = {Authorization: `Bearer ${token}`};
+        let result =(await this.api.get('/video', {headers:headers})).data;
+        return result.sort(this.sortVideo);
     }
 
     async login(username, password){
