@@ -14,9 +14,7 @@ class ApiClient{
     }
 
     async getCameras(){
-        let res = (await this.api.get('/cameras')).data;
-        console.log(res);
-        return res;
+        return (await this.api.get('/cameras')).data;
     }
     
     async getRecordedVideos(){
