@@ -20,6 +20,10 @@ export default class ApiClient{
         return result;
     }
 
+    async login(username, password){
+        return (await this.api.post('/login',{username: username, password: password})).data;
+    }
+
     sortVideo(a, b){
         if(a == null || b== null) return 0;
         let dateA = new Date(a.date);
