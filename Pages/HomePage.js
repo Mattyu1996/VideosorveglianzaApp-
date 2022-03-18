@@ -1,20 +1,18 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View, Text } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { NavigationContainer } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
+import React, { useEffect } from "react";
+import { StyleSheet, View } from "react-native";
+import { useDispatch } from "react-redux";
+import camerasApiCall from "../Redux/Actions/cameraActionCreator";
+import videosApiCall from "../Redux/Actions/videoActionCreator";
 import LiveScreen from "../Screens/LiveScreen";
 import VideoScreen from "../Screens/VideoScreen";
-import { Ionicons } from '@expo/vector-icons';
-import React, {useEffect} from 'react';
-import videosApiCall from '../Redux/Actions/videoActionCreator';
-import camerasApiCall from '../Redux/Actions/cameraActionCreator';
-import {useDispatch, useSelector} from 'react-redux';
 
 const Tab = createMaterialTopTabNavigator();
 
-
-function Home({navigation}) {
-
+function Home({ navigation }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -31,7 +29,7 @@ function Home({navigation}) {
     tabBarItemStyle: {
       paddingTop: 10,
       paddingBottom: 10,
-      flexDirection: 'row'
+      flexDirection: "row",
     },
     tabBarIndicatorStyle: {
       backgroundColor: "#ef6c00",
@@ -39,25 +37,24 @@ function Home({navigation}) {
     },
     tabBarActiveTintColor: "white",
     tabBarInactiveTintColor: "#ef6c00",
-    tabBarIconStyle:{
-      marginRight: 10
+    tabBarIconStyle: {
+      marginRight: 10,
     },
     tabBarShowIcon: true,
   };
 
-
   const showAllCameras = () => {
-    navigation.navigate('FourPlayer');
+    navigation.navigate("FourPlayer");
   };
 
   const showOneCamera = (videoUrl) => {
-    navigation.navigate('MaximizedLivePlayer',{videoUrl: videoUrl});
+    navigation.navigate("MaximizedLivePlayer", { videoUrl: videoUrl });
   };
 
   const playVideo = (videoUrl) => {
     console.log(videoUrl);
-    navigation.navigate('MaximizedPlayer',{videoUrl: videoUrl});
-  }
+    navigation.navigate("MaximizedPlayer", { videoUrl: videoUrl });
+  };
 
   return (
     <View style={styles.container}>
@@ -66,21 +63,36 @@ function Home({navigation}) {
         <Tab.Navigator screenOptions={tabBarStyle}>
           <Tab.Screen
             name="Live"
-            children={()=><LiveScreen showAllCameras={showAllCameras} showOneCamera={showOneCamera}/>}
+            children={() => (
+              <LiveScreen
+                showAllCameras={showAllCameras}
+                showOneCamera={showOneCamera}
+              />
+            )}
             tabBarAccessibilityLabel="Live"
             options={{
               tabBarIcon: ({ color, size }) => (
-                <Ionicons name="videocam" color={color} size={size}  style={styles.icon}/>
+                <Ionicons
+                  name="videocam"
+                  color={color}
+                  size={size}
+                  style={styles.icon}
+                />
               ),
             }}
           />
           <Tab.Screen
             name="Video"
-            children={()=><VideoScreen playVideo={playVideo}/>}
+            children={() => <VideoScreen playVideo={playVideo} />}
             tabBarAccessibilityLabel="Video"
             options={{
               tabBarIcon: ({ color, size }) => (
-                <Ionicons name="document" color={color} size={size}  style={styles.icon}/>
+                <Ionicons
+                  name="document"
+                  color={color}
+                  size={size}
+                  style={styles.icon}
+                />
               ),
             }}
           />
@@ -97,9 +109,9 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     backgroundColor: "#ef6c00",
   },
-  icon:{
-    fontSize: 25  
-  }
+  icon: {
+    fontSize: 25,
+  },
 });
 
 export default Home;

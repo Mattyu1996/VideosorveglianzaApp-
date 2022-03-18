@@ -5,7 +5,6 @@ import { Pressable, StyleSheet } from "react-native";
 export default function IconButton(props) {
   const { onPress, name, size } = props;
 
-
   const styles = StyleSheet.create({
     button: {
       width: size,
@@ -37,14 +36,21 @@ export default function IconButton(props) {
     >
       {({ pressed }) =>
         pressed ? (
-            <Ionicons name={name} color="red" size={size/2.5} style={styles.iconPressed} />
+          <Ionicons
+            name={name}
+            color="red"
+            size={size / 2.5}
+            style={styles.iconPressed}
+          />
         ) : (
-            <Ionicons name={name} color="red" size={size/2.5} style={styles.icon} />
+          <Ionicons
+            name={name}
+            color="red"
+            size={size / 2.5}
+            style={styles.icon}
+          />
         )
       }
     </Pressable>
   );
-
 }
-
-

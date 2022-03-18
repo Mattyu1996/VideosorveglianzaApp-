@@ -1,22 +1,21 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { FlatList, StyleSheet } from "react-native";
-import { FAB } from "react-native-elements";
-import CameraCard from "../Components/CameraCard";
 import * as React from "react";
 import { Component } from "react";
+import { FlatList, StyleSheet } from "react-native";
+import { FAB } from "react-native-elements";
 import { connect } from "react-redux";
+import CameraCard from "../Components/CameraCard";
 
-class LiveScreen extends Component{
-  
-  constructor(props){
-    super(props)
+class LiveScreen extends Component {
+  constructor(props) {
+    super(props);
   }
 
-  state={
-    cameras: []
-  }
+  state = {
+    cameras: [],
+  };
 
-  render(){
+  render() {
     return (
       <LinearGradient colors={["#da8f52", "#ef6c00"]} style={styles.gradient}>
         <FlatList
@@ -28,7 +27,7 @@ class LiveScreen extends Component{
           data={this.props.cameras}
           renderItem={({ item }) => (
             <CameraCard
-              title={"Camera "+item.id}
+              title={"Camera " + item.id}
               thumbnail={item.thumb}
               onPlay={() => {
                 this.props.showOneCamera(item.url);
@@ -62,11 +61,10 @@ const styles = StyleSheet.create({
   },
 });
 
-
 const mapStateToProps = (state) => {
   return {
-    cameras: state.cameraReducer.cameras
-  }
+    cameras: state.cameraReducer.cameras,
+  };
 };
 
 export default connect(mapStateToProps)(LiveScreen);

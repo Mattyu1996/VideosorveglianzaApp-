@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, ImageBackground } from "react-native";
+import { ImageBackground, StyleSheet, Text, View } from "react-native";
 import IconButton from "./IconButton";
 
 export default function CameraCard(props) {
@@ -8,11 +8,18 @@ export default function CameraCard(props) {
     <View style={styles.container}>
       <Text style={styles.heading}>{title}</Text>
       <View style={styles.innerContainer}>
-        <ImageBackground source={{uri: thumbnail}} imageStyle={{ borderBottomRightRadius: 30, borderBottomLeftRadius: 30}} resizeMode="cover" style={styles.image}>
-          <View style={{margin:15}}>
+        <ImageBackground
+          source={{ uri: thumbnail }}
+          imageStyle={{
+            borderBottomRightRadius: 30,
+            borderBottomLeftRadius: 30,
+          }}
+          resizeMode="cover"
+          style={styles.image}
+        >
+          <View style={{ margin: 15 }}>
             <IconButton size={50} name="play" onPress={onPlay}></IconButton>
           </View>
-          
         </ImageBackground>
       </View>
     </View>
@@ -51,11 +58,11 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginBottom: 5,
   },
-  image:{
+  image: {
     flex: 1,
-    width: '100%',
+    width: "100%",
     borderRadius: 30,
     alignItems: "flex-start",
     justifyContent: "flex-end",
-  }
+  },
 });

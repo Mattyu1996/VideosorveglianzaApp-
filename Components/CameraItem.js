@@ -1,14 +1,14 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function CameraItem(props) {
-  const { title, onPress, cameraId, first} = props;
+  const { title, onPress, cameraId, first } = props;
 
   return (
     <Pressable
       style={({ pressed }) => [
         {
           backgroundColor: pressed ? "#f5f5f5" : "transparent",
-          borderTopWidth: first ? 1 : 0
+          borderTopWidth: first ? 1 : 0,
         },
         styles.pressable,
       ]}
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     height: 80,
     paddingLeft: 20,
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
   },
   itemIconContainer: {
     backgroundColor: "#ef6c00",

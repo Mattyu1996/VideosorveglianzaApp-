@@ -8,7 +8,6 @@ import CameraItem from "../Components/CameraItem";
 import PrimaryButton from "../Components/PrimaryButton";
 import VideoItem from "../Components/VideoItem";
 
-
 class VideoScreen extends Component {
   constructor(props, { navigation }) {
     super(props);
@@ -18,9 +17,9 @@ class VideoScreen extends Component {
 
   state = {
     modalVisible: false,
-      action: null,
-      selectedVideo: null,
-  }
+    action: null,
+    selectedVideo: null,
+  };
 
   selectCamera = (cameraId) => {
     if (this.state.action != null && this.state.selectedVideo != null) {
@@ -65,7 +64,7 @@ class VideoScreen extends Component {
 
   openModal = () => {
     console.log("openModal");
-    this.setState({ modalVisible: true })
+    this.setState({ modalVisible: true });
   };
 
   closeModal = () => {
@@ -203,9 +202,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    videos: state.videosReducer.videos
-  }
+    videos: state.videosReducer.videos,
+  };
 };
 
 export default connect(mapStateToProps)(VideoScreen);
-

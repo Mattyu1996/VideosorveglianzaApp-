@@ -1,22 +1,26 @@
-import * as React from "react";
-import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
-import { StyleSheet, Text, TextInput, Image, View } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import * as React from "react";
+import { Image, StyleSheet, Text, TextInput, View } from "react-native";
+import { useDispatch } from "react-redux";
 import PrimaryButton from "../Components/PrimaryButton";
 import authCall from "../Redux/Actions/authActionCreator";
-import {useDispatch} from 'react-redux';
 
 export default function Login(props) {
   const dispatch = useDispatch();
   const [username, setUsername] = React.useState();
   const [password, setPassword] = React.useState();
   const login = () => {
-    if(username!=""&&username!=null&&password!=""&&password!=null){
+    if (
+      username != "" &&
+      username != null &&
+      password != "" &&
+      password != null
+    ) {
       dispatch(authCall(username, password));
-    }
-    else console.log("Inserire username e password");
+    } else console.log("Inserire username e password");
   };
-  
+
   return (
     <LinearGradient colors={["#ef6c00", "#da8f52"]} style={styles.gradient}>
       <StatusBar style="light" />
@@ -30,7 +34,7 @@ export default function Login(props) {
           placeholder={"Username"}
           accessibilityLabel="Username"
           defaultValue={username}
-          onChangeText={input => setUsername(input)}
+          onChangeText={(input) => setUsername(input)}
         />
         <TextInput
           style={styles.input}
@@ -38,7 +42,7 @@ export default function Login(props) {
           accessibilityLabel="Password"
           secureTextEntry={true}
           defaultValue={password}
-          onChangeText={input => setPassword(input)}
+          onChangeText={(input) => setPassword(input)}
         />
         <PrimaryButton
           title="Accedi"
