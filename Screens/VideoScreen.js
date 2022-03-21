@@ -1,4 +1,3 @@
-import * as FileSystem from "expo-file-system";
 import { LinearGradient } from "expo-linear-gradient";
 import { Component } from "react";
 import { FlatList, Modal, StyleSheet, Text, View } from "react-native";
@@ -7,7 +6,8 @@ import { connect } from "react-redux";
 import CameraItem from "../Components/CameraItem";
 import PrimaryButton from "../Components/PrimaryButton";
 import VideoItem from "../Components/VideoItem";
-
+import DatePicker from "react-native-date-picker";
+import videosApiCall from "../Redux/Actions/videoActionCreator";
 class VideoScreen extends Component {
   constructor(props, { navigation }) {
     super(props);
@@ -16,61 +16,50 @@ class VideoScreen extends Component {
   }
 
   state = {
-    modalVisible: false,
-    action: null,
+    cameraModalVisible: false,
+    searchModalVisible: false,
     selectedVideo: null,
+    selectedDate: new Date(),
   };
 
   selectCamera = (cameraId) => {
-    if (this.state.action != null && this.state.selectedVideo != null) {
-      if (this.state.action == "play") {
-        this.props.playVideo(
-          `https://vsserver.ccml.it/video/${cameraId}/${this.state.selectedVideo.date}/${this.state.selectedVideo.file}`
-        );
-      } else if (this.state.action == "download") {
-        this.downloadVideo(
-          this.state.selectedVideo.file,
-          `https://vsserver.ccml.it/video/${cameraId}/${this.state.selectedVideo.date}/${this.state.selectedVideo.file}?download=true`
-        );
-      }
+    if (this.state.selectedVideo != null) {
+      this.props.playVideo(
+        `https://vsserver.ccml.it/video/${cameraId}/${this.state.selectedVideo.date}/${this.state.selectedVideo.file}`
+      );
     }
-    this.closeModal();
+    this.closeCameraModal();
   };
-
-  async downloadVideo(filename, fileUrl) {
-    let fileUri = `${FileSystem.documentDirectory}${filename}`;
-    FileSystem.FileSystemDownloadResult = await FileSystem.downloadAsync(
-      fileUrl,
-      fileUri
-    );
-  }
 
   search = () => {
     console.log("search");
   };
 
   onPlay(selectedVideo) {
-    //console.log(selectedVideo);
     this.setState({ selectedVideo: selectedVideo });
-    this.setState({ action: "play" });
-    this.openModal();
+    this.openCameraModal();
   }
 
-  onDownload(selectedVideo) {
-    console.log(selectedVideo);
-    this.setState({ selectedVideo: selectedVideo, action: "download" });
-    this.openModal();
+  openCameraModal = () => {
+    this.setState({ cameraModalVisible: true });
+  };
+
+  closeCameraModal = () => {
+    this.setState({ cameraModalVisible: false.valueOf, selectedVideo: null });
+  };
+
+  openSearchModal = () => {
+    this.setState({ searchModalVisible: true });
+  };
+
+  closeSearchModal = () => {
+    this.setState({ searchModalVisible: false, selectedDate: null });
+  };
+
+  getVideosByDate = (date) =>{
+    this.closeSearchModal();
+    this.props.dispatch(videosApiCall(date));
   }
-
-  openModal = () => {
-    console.log("openModal");
-    this.setState({ modalVisible: true });
-  };
-
-  closeModal = () => {
-    console.log("closeModal");
-    this.setState({ modalVisible: false });
-  };
 
   render() {
     return (
@@ -78,10 +67,38 @@ class VideoScreen extends Component {
         <Modal
           animationType="slide"
           transparent={true}
-          visible={this.state.modalVisible}
-          onRequestClose={() => {
-            console.log("Modal has been closed.");
-          }}
+          visible={this.state.searchModalVisible}
+        >
+          <View style={styles.searchModalContainer}>
+            <Text style={styles.modalHeading}>Seleziona la data</Text>
+            <DatePicker
+              mode="date"
+              date={new Date()}
+              onDateChange={(date) => this.setState({selectedDate: date})}
+            />
+            <View style={{flexDirection:'row', width:"90%", justifyContent:'space-between'}}>
+            <PrimaryButton
+              style={{ marginTop: 20 }}
+              title="Conferma"
+              reverse="true"
+              onPress={() => this.getVideosByDate(this.state.selectedDate)}
+              accessibilityLabel="Conferma"
+            ></PrimaryButton>
+            <PrimaryButton
+              style={{ marginTop: 20 }}
+              title="Indietro"
+              onPress={() => this.closeSearchModal()}
+              accessibilityLabel="Indietro"
+            ></PrimaryButton>
+            </View>
+          </View>
+        </Modal>
+
+        {/* Camera Modal */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.state.cameraModalVisible}
         >
           <View style={styles.modalContainer}>
             <Text style={styles.modalHeading}>Seleziona la Camera</Text>
@@ -105,11 +122,12 @@ class VideoScreen extends Component {
             <PrimaryButton
               style={{ marginTop: 20 }}
               title="Indietro"
-              onPress={() => this.closeModal()}
+              onPress={() => this.closeCameraModal()}
               accessibilityLabel="Indietro"
             ></PrimaryButton>
           </View>
         </Modal>
+        {/* End cameras Modal */}
 
         {this.props.videos != null && this.props.videos.length > 0 ? (
           <FlatList
@@ -120,11 +138,7 @@ class VideoScreen extends Component {
             }}
             data={this.props.videos}
             renderItem={({ item }) => (
-              <VideoItem
-                videoInfo={item}
-                onPlay={this.onPlay.bind(this)}
-                onDownload={this.onDownload.bind(this)}
-              />
+              <VideoItem videoInfo={item} onPlay={this.onPlay.bind(this)} />
             )}
           />
         ) : (
@@ -136,7 +150,7 @@ class VideoScreen extends Component {
           icon={{ name: "search", color: "white" }}
           color="#ef6c00"
           placement="right"
-          onPress={this.search}
+          onPress={this.openSearchModal}
         />
       </LinearGradient>
     );
@@ -152,7 +166,6 @@ const styles = StyleSheet.create({
   },
   list: {
     width: "100%",
-    paddingVertical: 15,
   },
   modalContainer: {
     backgroundColor: "white",
@@ -162,6 +175,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: "50%",
     marginTop: "50%",
+    borderRadius: 20,
+    paddingTop: 20,
+    paddingBottom: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  searchModalContainer: {
+    backgroundColor: "white",
+    width: "90%",
+    alignSelf: "center",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    marginBottom: "10%",
+    marginTop: "60%",
     borderRadius: 20,
     paddingTop: 20,
     paddingBottom: 20,
@@ -206,4 +239,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(VideoScreen);
+const mapsDispatchToProps = (dispatch) =>{
+  return {
+    dispatch: dispatch
+  }
+}
+
+export default connect(mapStateToProps, mapsDispatchToProps)(VideoScreen);

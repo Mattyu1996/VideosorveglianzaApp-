@@ -4,11 +4,11 @@ import {
     fetchVideoSuccess
 } from "./videoActions";
 
-const videoActionCreator = () => (dispatch) => {
+const videoActionCreator = (date) => (dispatch) => {
   dispatch(fetchVideos());
   return new Promise(() => {
     apiClient
-      .getRecordedVideos()
+      .getRecordedVideos(date)
       .then((res) => {
         dispatch(fetchVideoSuccess(res));
       })

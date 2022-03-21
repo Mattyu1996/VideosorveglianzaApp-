@@ -27,11 +27,6 @@ export default class VideoItem extends Component {
           <View style={styles.buttonContainer}>
             <IconButton
               size={40}
-              name="download"
-              onPress={() => this.props.onDownload(this.props.videoInfo)}
-            ></IconButton>
-            <IconButton
-              size={40}
               name="play"
               onPress={() => {
                 this.props.onPlay(this.props.videoInfo);
@@ -59,7 +54,7 @@ const styles = StyleSheet.create({
   thumbnail: {
     marginLeft: 20,
     backgroundColor: "gray",
-    width: 150,
+    width: 200,
     height: 120,
     borderRadius: 20,
   },

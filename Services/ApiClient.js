@@ -17,10 +17,12 @@ class ApiClient {
     return (await this.api.get("/cameras", { headers: headers })).data;
   }
 
-  async getRecordedVideos() {
+  async getRecordedVideos(date = null) {
+    if(date!=undefined&&date!=null) console.log(date);
     let token = await this.storege.getToken();
     let headers = { Authorization: `Bearer ${token}` };
-    let result = (await this.api.get("/video", { headers: headers })).data;
+    let endpoint = date!=undefined&&date!=null ? `/video?date=${date.toString()}` : '/video';
+    let result = (await this.api.get(endpoint, { headers: headers })).data;
     return result.sort(this.sortVideo);
   }
 

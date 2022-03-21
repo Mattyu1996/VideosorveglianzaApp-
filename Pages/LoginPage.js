@@ -26,7 +26,7 @@ export default function Login(props) {
       <StatusBar style="light" />
       <Text style={styles.heading}>Videosorveglianza</Text>
       <View style={styles.iconContainer}>
-        <Image source={require("../assets/cctv.png")} style={styles.icon} />
+        <Image source={require("../assets/icon.png")} style={styles.icon} />
       </View>
       <View style={styles.inputsContainer}>
         <TextInput
