@@ -1,6 +1,7 @@
 import { Component } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import IconButton from "./IconButton";
+
 export default class VideoItem extends Component {
   constructor(props) {
     super(props);

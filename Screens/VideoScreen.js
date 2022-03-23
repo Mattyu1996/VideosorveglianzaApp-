@@ -8,6 +8,7 @@ import PrimaryButton from "../Components/PrimaryButton";
 import VideoItem from "../Components/VideoItem";
 import DatePicker from "react-native-date-picker";
 import videosApiCall from "../Redux/Actions/videoActionCreator";
+
 class VideoScreen extends Component {
   constructor(props, { navigation }) {
     super(props);
@@ -61,6 +62,10 @@ class VideoScreen extends Component {
     this.props.dispatch(videosApiCall(date));
   }
 
+  refresh = ()=>{
+    this.props.dispatch(videosApiCall());
+  }
+
   render() {
     return (
       <LinearGradient colors={["#f5f5f5", "#f5f5f5"]} style={styles.gradient}>
@@ -71,11 +76,14 @@ class VideoScreen extends Component {
         >
           <View style={styles.searchModalContainer}>
             <Text style={styles.modalHeading}>Seleziona la data</Text>
-            <DatePicker
-              mode="date"
-              date={this.state.selectedDate}
-              onDateChange={(date) => this.setState({selectedDate: date})}
-            />
+            <View style={{height: 180}}>
+              <DatePicker
+                mode="date"
+                date={this.state.selectedDate}
+                onDateChange={(date) => this.setState({selectedDate: new Date(date)})}
+              />
+              <Text style={{width: '100%', height: 60, position: 'absolute', bottom: 0, left: 0}}>{' '}</Text>
+            </View>
             <View style={{flexDirection:'row', width:"90%", justifyContent:'space-between'}}>
             <PrimaryButton
               style={{ marginTop: 20 }}
@@ -145,10 +153,20 @@ class VideoScreen extends Component {
           <Text style={{ fontSize: 20 }}>Nessun video disponibile</Text>
         )}
         <FAB
+          style={{ marginBottom: 120, marginRight: 23 }}
+          size="small"
+          visible={true}
+          icon={{ name: "refresh", color: "white" }}
+          color="#ef6c00"
+          placement="right"
+          onPress={this.refresh}
+        />
+        <FAB
           style={{ marginBottom: 50 }}
           visible={true}
           icon={{ name: "search", color: "white" }}
           color="#ef6c00"
+          hideOnScroll={true}
           placement="right"
           onPress={this.openSearchModal}
         />
