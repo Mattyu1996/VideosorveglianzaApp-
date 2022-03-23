@@ -1,15 +1,19 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
-import * as React from "react";
-import { Image, StyleSheet, Text, TextInput, View } from "react-native";
+import { Keyboard, Image, StyleSheet, Text, TextInput, View } from "react-native";
 import { useDispatch } from "react-redux";
 import PrimaryButton from "../Components/PrimaryButton";
 import authCall from "../Redux/Actions/authActionCreator";
+import React, { useState, useEffect } from 'react';
 
 export default function Login(props) {
   const dispatch = useDispatch();
   const [username, setUsername] = React.useState();
   const [password, setPassword] = React.useState();
+  const [keyboardVisible, setkeyboardVisible] = useState();
+  const _keyboardDidShow = () => setkeyboardVisible(true);
+  const _keyboardDidHide = () => setkeyboardVisible(false);
+
   const login = () => {
     if (
       username != "" &&
@@ -21,10 +25,26 @@ export default function Login(props) {
     } else console.log("Inserire username e password");
   };
 
+  useEffect(() => {
+    let listeners = [
+      Keyboard.addListener('keyboardDidShow', _keyboardDidShow),
+      Keyboard.addListener('keyboardDidHide', _keyboardDidHide),
+    ]
+
+    // cleanup function
+    return () => {
+      listeners.forEach(l => l.remove());
+    };
+  }, []);
+
+
+
   return (
     <LinearGradient colors={["#ef6c00", "#da8f52"]} style={styles.gradient}>
       <StatusBar style="light" />
-      <Text style={styles.heading}>Videosorveglianza</Text>
+      {
+        !keyboardVisible && <Text style={styles.heading}>Videosorveglianza</Text>
+      }
       <View style={styles.iconContainer}>
         <Image source={require("../assets/icon.png")} style={styles.icon} />
       </View>

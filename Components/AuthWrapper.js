@@ -14,7 +14,7 @@ export default function AuthWrapper() {
   useSelector((state) => state.authReducer.token);
   const [isAuthenticated, setIsAuthenticated] = React.useState();
   const localStorage = new LocalStorage();
-  // localStorage.saveToken("");
+  //localStorage.saveToken("");
   localStorage.getToken().then((token) => {
     if (token != "" && token != null) {
       console.log("GIA AUTENTICATO");

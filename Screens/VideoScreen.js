@@ -53,7 +53,7 @@ class VideoScreen extends Component {
   };
 
   closeSearchModal = () => {
-    this.setState({ searchModalVisible: false, selectedDate: null });
+    this.setState({ searchModalVisible: false, selectedDate: new Date() });
   };
 
   getVideosByDate = (date) =>{
@@ -73,7 +73,7 @@ class VideoScreen extends Component {
             <Text style={styles.modalHeading}>Seleziona la data</Text>
             <DatePicker
               mode="date"
-              date={new Date()}
+              date={this.state.selectedDate}
               onDateChange={(date) => this.setState({selectedDate: date})}
             />
             <View style={{flexDirection:'row', width:"90%", justifyContent:'space-between'}}>
